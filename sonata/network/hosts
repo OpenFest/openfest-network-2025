@@ -1,0 +1,67 @@
+127.0.0.1	localhost
+10.20.0.1	sonata
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+############################### new set #####################
+### main ###
+10.10.0.1 sonata #ext-ja
+10.20.0.1 sonata #mgmt
+10.30.0.1 sonata #video-a
+10.31.0.1 sonata #video-b
+10.40.0.1 sonata #overflow
+10.60.0.1 sonata #voip
+10.70.0.1 sonata #wired
+10.80.0.1 sonata #wifi
+10.95.0.1 sonata #rec
+
+### switch ###
+10.20.0.10 sw-core #set
+# 10.20.0.11 sw-barrier #pending actually is 10.20.0.200
+# 10.20.0.12 sw-gkc # -> switch is actually with 10.20.0.24
+10.20.0.13 sw-voc-a #set
+10.20.0.14 sw-voc-b #set
+10.20.0.15 sw-rec #set
+10.20.0.16 sw-noc #set
+10.20.0.17 sw-noc-2 #set
+10.20.0.19 sw-media #set
+10.20.0.20 sw-workshop-1 #pending
+#10.20.0.21 sw-workshop-2 #pending
+10.20.0.21 sw-team #set
+10.20.0.22 sw-workshop-3 #pending
+
+10.20.0.24 sw-gkc # actual IP
+10.20.0.200 sw-barrier # actual IP
+
+10.20.0.30 sw-floor0 #set (high IP because we forgot it)
+#
+#### AP ###
+10.20.0.51 ap-hall-b
+10.20.0.52 ap-rec
+10.20.0.53 ap-hall-c
+10.20.0.54 ap-team
+10.20.0.55 ap-hall-a
+10.20.0.56 ap-ws-top
+10.20.0.57 ap-noc
+10.20.0.58 ap-ws
+10.20.0.59 ap-b-of
+10.20.0.60 ap-10
+10.20.0.61 ap-11
+#
+#
+### Phones (VOIP) ###
+10.60.0.10 phone-noc-1
+10.60.0.11 phone-noc-2
+10.60.0.12 phone-media
+10.60.0.13 phone-voc-a
+10.60.0.14 phone-voc-b
+10.60.0.15 phone-rec
+10.60.0.16 phone-team
+#
+#
+###Overflow tv's
+10.20.0.90 tv-floor0
+10.20.0.91 tv-floor1

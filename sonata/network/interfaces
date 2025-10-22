@@ -1,0 +1,124 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+	up ip addr add 185.117.82.241/32 dev lo
+	up ip -6 addr add 2001:67c:21bc:30::1/128 dev lo
+	up ip rule add from 185.117.82.241/32 table krok
+	up ip rule add from 185.117.82.241/32 iif lo table krok
+	up ip route add blackhole 2001:67c:21bc:30::/60
+	down ip addr del 185.117.82.241/32 dev lo
+	down ip -6 addr del 2001:67c:21bc:30::1/128 dev lo
+
+# The primary network interface
+allow-hotplug bond0
+
+#allow-hotplug eno2
+#allow-hotplug eno1
+#allow-hotplug enp1s0f0
+#allow-hotplug enp1s0f1
+
+auto bond0
+iface bond0 inet manual
+	bond-primary enp1s0f0 enp1s0f1
+	bond-slaves enp1s0f0 enp1s0f1 eno1 eno2
+	bond-mode active-backup
+	bond-miimon 100
+	hwaddress a0:AA:9f:03:B3:C3
+	mtu 9000
+
+auto bond0.666
+iface bond0.666 inet static
+	address 10.10.10.4/24
+	gateway 10.10.10.2
+	dns-nameservers 1.1.1.1 8.8.8.8 1.0.0.1 8.8.4.4
+	up ip r add 10.10.10.0/24 dev bond0.666 table devhex
+	up ip r add default via 10.10.10.2 table devhex
+	up ip rule add from 10.10.10.4 table devhex
+	up ip rule add from 10.10.10.4 iif lo table devhex
+	up ip rule add fwmark 0x3 iif lo table devhex
+	up ip rule add fwmark 0x3 table devhex
+
+
+
+# A1 backup
+auto bond0.10
+iface bond0.10 inet dhcp
+
+#MGMT
+auto bond0.20
+iface bond0.20 inet static
+	address 10.20.0.1/24
+
+
+# Interface video-a
+auto bond0.30
+iface bond0.30 inet static
+	address 10.30.0.1/24
+
+# Interface video-b
+auto bond0.31
+iface bond0.31 inet static
+	address 10.31.0.1/24
+
+# Interface Workshop
+auto bond0.40
+iface bond0.40 inet static
+	address 10.40.0.1/24
+
+# Interface Phones
+auto bond0.60
+iface bond0.60 inet static
+	address 10.60.0.1/24
+
+# Interface Wired
+auto bond0.70
+iface bond0.70 inet static
+	address 10.70.0.1/24
+iface bond0.70 inet6 static
+	address 2001:67c:21bc:31::1/64
+
+# Interface Wireless
+auto bond0.80
+iface bond0.80 inet static
+	address 10.80.0.1/20
+iface bond0.80 inet6 static
+	address 2001:67c:21bc:32::1/64
+
+# Interface Overflow
+auto bond0.90
+iface bond0.90 inet static
+	address 10.90.0.1/24
+
+# Interface Reception
+auto bond0.95
+iface bond0.95 inet static
+	address 10.95.0.1/24
+
+
+#UPLINK BGP KROKODIL^^
+auto wg_marla
+iface wg_marla inet static
+	address 172.31.99.26/30
+	pre-up ip link add $IFACE type wireguard
+	pre-up ip link set dev $IFACE up mtu 1400
+	pre-up wg setconf $IFACE /etc/wireguard/$IFACE.conf
+	up ip a add 2001:67c:21bc:7fff:0009:1:1:2/112 dev $IFACE
+	up ip r add default dev $IFACE table krok
+	post-down ip link del $IFACE
+
+
+auto bond0.372
+iface bond0.372 inet static
+	address 172.31.42.100
+	netmask 255.255.255.0
+	# production routing via marla / table krok
+	post-up /sbin/ip r add default dev bond0.372  table krok
+
+iface bond0.372 inet6 static
+	address 2001:67c:21bc:7fff:f0f:fcf0:0:2/112
+
