@@ -5,7 +5,7 @@ require_once 'Provision.php';
 
 $provision = new Provision();
 $res = readline_completion_function(function($input, $index) {
-	$commands = ['conf', 'dev', 'add-dev', 'add-conf', 'set', 'map', 'provision', 'exit', 'help', '?'];
+	$commands = ['conf', 'dev', 'add-dev', 'add-conf', 'set', 'map', 'full-map', 'provision', 'exit', 'help', '?'];
 	return array_filter($commands, function($command) use ($input) {
 		return strpos($command, $input) === 0;
 	});
